@@ -11,4 +11,5 @@ return [
             'showScriptName' => false,
         ],
     ],
+    'name' => 'Advert Project',
 ];
