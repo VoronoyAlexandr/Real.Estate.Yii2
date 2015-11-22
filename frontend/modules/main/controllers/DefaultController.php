@@ -9,17 +9,17 @@ class DefaultController extends Controller
 {
     public function actionIndex()
     {
-
         $this->layout = "bootstrap";
 
         return $this->render('index');
     }
 
     public function actionService(){
-        $cache = \Yii::$app->cache;
 
+        $locator = \Yii::$app->locator;
+        $cache = $locator->cache;
 
-        $cache->set("test", 1);
+        $cache->set("test",1);
 
         print $cache->get("test");
 
@@ -27,13 +27,28 @@ class DefaultController extends Controller
 
     public function actionEvent(){
 
-        $component = \Yii::$app->common;
+        $component = \Yii::$app->common; //new Common();
+        $component->on(Common::EVENT_NOTIFY,[$component,'notifyAdmin']);
+        $component->sendMail("test@domain.com","Test","Test text");
+        $component->off(Common::EVENT_NOTIFY,[$component,'notifyAdmin']);
 
-        $component->on(Common::EVENT_NOTIFY, [$component, 'notifyAdmin']);
-
-        $component->sendMail("test@domain", "test", "test text");
-        $component->off(Common::EVENT_NOTIFY, [$component, 'notifyAdmin']);
     }
 
+    public function actionPath(){
+        // @yii
+        // @app
+        //@runtime
+        //@webroot
+        //@web
+        //@vendor
+        //@bower
+        //@npm
+        // @frontend
+        // @backend
 
+        print \Yii::getAlias('@test');
+
+
+
+    }
 }
